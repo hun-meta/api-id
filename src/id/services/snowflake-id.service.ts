@@ -3,6 +3,8 @@ import SnowflakeId from 'snowflake-id';
 import { GenerateIdResDto } from '../dtos/response.dto';
 import { GenerateIdDto } from '../dtos/request.dto';
 import { ConfigService } from '@nestjs/config';
+import { LoggerService } from 'src/common/logger/services/logger.service';
+import { EnvUndefinedError } from 'src/common/exception/errors';
 
 @Injectable()
 export class SnowflakeIdService {
@@ -10,8 +12,10 @@ export class SnowflakeIdService {
     private machineId: number;
 
     constructor(
-        private readonly configService: ConfigService
+        private readonly configService: ConfigService,
+        private readonly logger: LoggerService
     ) {
+        this.logger.setContext(SnowflakeIdService.name);
         this.snowflakes = new Map();
         this.machineId = this.getMachineId();
         this.initializeSnowflakes();
@@ -23,23 +27,35 @@ export class SnowflakeIdService {
      * @returns Machine ID
      */
     private getMachineId(): number {
-        const ip = require('ip');
-        const ipAddress = ip.address();
+        const ipAddress = process.env.HOST_IP;
         const parts = ipAddress.split('.');
+    
+        if(parts.length < 4){
+            throw new EnvUndefinedError(['HOST_IP']);
+        }
 
-        return parseInt(parts[2]) * 256 + parseInt(parts[3]);
-    }
+        const thirdOctet = parseInt(parts[2]);
+        const machineIdPart1 = thirdOctet & 0b11;
+    
+        const machineIdPart2 = parseInt(parts[3]);
+    
+        return machineIdPart1 * 256 + machineIdPart2;
+    }    
 
     /**
      * Initialize snowflakes for each tables
      */
     private initializeSnowflakes() {
+
         const tables = this.configService.get<string>('SNOWFLAKE_TABLES')?.split(',') || [];
-        tables.forEach(table => {
-            this.snowflakes.set(table.trim(), new SnowflakeId({
-                mid: this.machineId,
-                offset: (2024 - 1970) * 31536000 * 1000,
-            }));
+        tables.forEach((table) => {
+            this.snowflakes.set(
+                table.trim(),
+                new SnowflakeId({
+                    mid: this.machineId,
+                    offset: (2024 - 1970) * 31536000 * 1000,
+                }),
+            );
         });
     }
 
@@ -57,6 +73,8 @@ export class SnowflakeIdService {
         }
 
         const id = snowflake.generate().toString();
+        console.log('id: %o', id);
+        console.log('snowflake: %o', snowflake);
         const dto = GenerateIdResDto.create(table, id);
 
         return dto;

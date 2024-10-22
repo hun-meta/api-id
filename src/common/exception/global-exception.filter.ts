@@ -17,7 +17,7 @@ import {
     UNSUPPORTED_MEDIA_TYPE,
 } from './constants/http.response-info.constants';
 import { ClsService } from 'nestjs-cls';
-import { LoggerService } from '../logger/logger.service';
+import { LoggerService } from '../logger/services/logger.service';
 import { BaseResponse } from '../response/dto/base-response.dto';
 import { ResponseInfo } from '../response/types';
 import { CustomUndefinedError, CustomUnExpectedError, EnvUndefinedError } from './errors';
@@ -133,10 +133,10 @@ function handleException(exception: any): Error {
     }
 }
 
-function isHandledError(exception: any){
-    if(exception instanceof HttpException || exception instanceof EnvUndefinedError){
+function isHandledError(exception: any) {
+    if (exception instanceof HttpException || exception instanceof EnvUndefinedError) {
         return true;
-    }else{
+    } else {
         return false;
     }
 }

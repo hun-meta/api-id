@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { SnowflakeIdService } from './services/snowflake-id.service';
 import { IdController } from './services/id.controller.v1';
-import { LoggerService } from 'src/common/logger/logger.service';
+import { LoggerService } from 'src/common/logger/services/logger.service';
 
 @Module({
     imports: [],
