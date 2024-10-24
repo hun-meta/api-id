@@ -2,7 +2,7 @@
 import { createBody, createSwaggerOptions } from '../../common/decorator/swagger.decorator';
 import { SUCCESS_RES } from '../constants/response-info.constants';
 
-export const getDefaultResponseOpts = createSwaggerOptions({
+export const GET_DEFAULT_RES_OPTS = createSwaggerOptions({
     summary: 'return datetime, for testing server(Default Path)',
     responses: [
         {
@@ -17,7 +17,7 @@ export const getDefaultResponseOpts = createSwaggerOptions({
     ],
 });
 
-export const getHealthOpts = createSwaggerOptions({
+export const GET_HEALTH_OPTS = createSwaggerOptions({
     summary: 'AWS Health Check Path',
     responses: [
         {

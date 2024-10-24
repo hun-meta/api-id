@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import SnowflakeId from 'snowflake-id';
-import { GenerateIdResDto } from '../dtos/response.dto';
-import { GenerateIdDto } from '../dtos/request.dto';
+import { GenerateIdResDTO } from '../dtos/response.dto';
+import { GenerateIdDTO } from '../dtos/request.dto';
 import { ConfigService } from '@nestjs/config';
 import { LoggerService } from 'src/common/logger/services/logger.service';
 import { EnvUndefinedError } from 'src/common/exception/errors';
@@ -64,7 +64,7 @@ export class SnowflakeIdService {
      *
      * @returns snowflake id as a dto
      */
-    generateId(genIdDto: GenerateIdDto): GenerateIdResDto {
+    generateId(genIdDto: GenerateIdDTO): GenerateIdResDTO {
         const table = genIdDto.table;
 
         const snowflake = this.snowflakes.get(table);
@@ -73,9 +73,7 @@ export class SnowflakeIdService {
         }
 
         const id = snowflake.generate().toString();
-        console.log('id: %o', id);
-        console.log('snowflake: %o', snowflake);
-        const dto = GenerateIdResDto.create(table, id);
+        const dto = GenerateIdResDTO.create(table, id);
 
         return dto;
     }

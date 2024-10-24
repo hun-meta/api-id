@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsString } from 'class-validator';
 
 // Snowflake ID Response DTO
-export class GenerateIdResDto {
+export class GenerateIdResDTO {
     @IsNotEmpty()
     @IsString()
     table: string; // table name
@@ -10,8 +10,8 @@ export class GenerateIdResDto {
     @IsString()
     id: string; // snowflake id
 
-    static create(table: string, id: string): GenerateIdResDto {
-        const dto = new GenerateIdResDto();
+    static create(table: string, id: string): GenerateIdResDTO {
+        const dto = new GenerateIdResDTO();
         dto.table = table;
         dto.id = id;
 

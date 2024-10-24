@@ -6,7 +6,7 @@ import {
 import { createBody, createSwaggerOptions } from '../../common/decorator/swagger.decorator';
 import { ID_CREATED } from '../constants/response-info.constants';
 
-export const generateIdOpts = createSwaggerOptions({
+export const GEN_ID_OPTS = createSwaggerOptions({
     summary: 'generate snowflake ID for database table',
     bearerAuth: true,
     params: [

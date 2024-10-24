@@ -1,22 +1,22 @@
 import { IsString } from 'class-validator';
 
-export class DefaultDto {
+export class DefaultDTO {
     @IsString()
     responseStr: string;
 
-    static create(datetime: string): DefaultDto {
-        const dto = new DefaultDto();
+    static create(datetime: string): DefaultDTO {
+        const dto = new DefaultDTO();
         dto.responseStr = datetime;
         return dto;
     }
 }
 
-export class HealthCheckDto {
+export class HealthCheckDTO {
     @IsString()
     datetime: string;
 
-    static create(datetime: string): HealthCheckDto {
-        const dto = new HealthCheckDto();
+    static create(datetime: string): HealthCheckDTO {
+        const dto = new HealthCheckDTO();
         dto.datetime = datetime;
         return dto;
     }
